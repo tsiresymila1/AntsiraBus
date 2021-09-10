@@ -1,21 +1,123 @@
 
-import React from "react";
-import {View,StyleSheet} from 'react-native';
-import { Card, List , TextInput,Button } from "react-native-paper";
-import {  } from 'react-native';
+import React,{useState} from "react";
+import { View,StyleSheet,Keyboard,Modal } from 'react-native';
+import SnackBar from 'react-native-snackbar-component';
+import { Card,Button,TextInput } from "react-native-paper";
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import AnimatedLottieView from 'lottie-react-native';
+import moment from "moment";
+
 
 export default Content = ({navigation})=> {
-    return (
-        <View style={styles.center}>
-        <Card style={{ height : 220, width : '100%', mapasrgin : 18, justifyContent: 'center'}}>
+
+  const [selectedStartItem, setSelectedStartItem] = useState(null);
+  const [selectedEndItem, setSelectedEndItem] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [visibleSnake, setvisibleSnake] = useState(false);
+  const [visibleModal, setvisibleModal] = useState(false);
+  const [messageError, setmessageError] = useState("")
+
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+    Keyboard.dismiss();
+  };
+
+  const handleConfirm = (date) => {
+    var formatedDate = moment(date).format('DD/MM/YYYY');
+    setSelectedDate(formatedDate);
+    hideDatePicker();
+  };
+
+  const handleSearch = () => {
+    if(`${selectedStartItem}`.trim() == "" || `${selectedEndItem}`.trim() === "" || !`${selectedDate}`.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)){
+        if(!visibleSnake){
+            setmessageError('Information non complete ');
+            setvisibleSnake(true);
+            setTimeout(function(){
+              setvisibleSnake(false);
+            },2000);
+        }
+    }
+    else{
+      setvisibleModal(true);
+      setTimeout(function(){
+          setvisibleModal(false);
+          navigation.navigate('List');
+      },3000);
+    }
+  }
+
+  return (
+      <View style={styles.center}>
+        <Card style={{ height : 254, width : '100%', mapasrgin : 18, justifyContent: 'center'}}>
           <Card.Content style={{ marginLeft: 20, marginRight: 20  }}>
-            <TextInput  left={()=> <TextInput.Icon name="account-minus-outline" />} style={{ fontSize : 14, fontFamily: 'Poppins-Regular',height : 40, backgroundColor : 'transparent', marginTop : 12, borderBottomColor : '#af31ac' , borderStyle: 'dashed'}}  placeholder="Depart" />
-            <TextInput  style={{ fontSize : 14, height : 40, backgroundColor : 'transparent', marginTop : 12, borderBottomColor : '#af31ac'}}  placeholder="Destination" />
-            <Button icon="account-minus-outline" style={{ marginTop : 30 }} mode="contained" onPress={() => console.log('Pressed')}>
+            <AutocompleteDropdown
+                clearOnFocus={true}
+                closeOnBlur={true}
+                closeOnSubmit={true}
+                initialValue={{ id: null }} 
+                onSelectItem={setSelectedStartItem}
+                showChevron={false}
+                debounce={2}
+                textInputProps={textInputprops}
+                dataSet={dataSet}
+                suggestionsListContainerStyle={{fontFamily:'Poppins-Regular', zIndex: 8 , borderRadius: 0}}
+                rightButtonsContainerStyle={{ backgroundColor : "transparent", marginTop: 5 }}
+          />
+          <AutocompleteDropdown
+                clearOnFocus={true}
+                closeOnBlur={true}
+                closeOnSubmit={true}
+                initialValue={{ id: null }} 
+                onSelectItem={setSelectedEndItem}
+                showChevron={false}
+                rightButtonsContainerStyle={{ backgroundColor : "transparent" , marginTop: 5  }}
+                dataSet={dataSet}
+                suggestionsListContainerStyle={{fontFamily:'Poppins-Regular', zIndex: 8, borderRadius: 0}}
+                textInputProps={{ style : textInputprops.style, placeholder: "Arrivé",placeholderTextColor: "#acacac"}}
+          />
+           <TextInput 
+                mode={'flat'} 
+                selectionColor={"transparent"} 
+                underlineColor={"transparent"} 
+                value={selectedDate} 
+                style={{...textInputprops.style, height:36, borderRadius: 4, paddingLeft: 0 , paddingRight: 0, fontFamily:'Poppins-Regular'}}  
+                showSoftInputOnFocus={false} 
+                placeholder={"Date"} 
+                placeholderTextColor="#acacac"
+                onFocus={showDatePicker} 
+            />
+           <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleConfirm}
+                minimumDate={new Date()}
+                style={{ }}
+                onCancel={hideDatePicker}
+            />
+           <Button icon={"magnify"} style={{ marginTop : 12 }} mode="contained" onPress={() => handleSearch()}>
                 Rechercher
             </Button>
           </Card.Content>
         </Card>
+        <SnackBar visible={visibleSnake}  backgroundColor={"#9e0000"} messageColor={"#f5f5f5"} textMessage={messageError} autoHidingTime={2000} />
+        <Modal
+            animationType="fade"
+            transparent={false}
+            style={{ opacity: 0.2}}
+            visible={visibleModal}
+            onRequestClose={() => {
+              setvisibleModal(!visibleModal);
+            }}>
+            <AnimatedLottieView source={require('../../assets/searc_loader.json')} autoPlay={true} loop />
+        </Modal>
       </View>
   );
 }
@@ -30,3 +132,23 @@ const styles = StyleSheet.create({
        paddingRight : 20
     },
   })
+
+const textInputprops = {
+  style : {
+    backgroundColor : "#1a237e15",
+    fontSize : 14, 
+    padding: 0,
+    fontFamily: 'Poppins-Regular',
+    marginTop : 6, 
+    marginBottom : 6, 
+    paddingRight : 0,
+    
+  },
+  placeholder: "Départ",
+  placeholderTextColor: "#acacac"
+}
+
+const dataSet = [
+  { id: '1', title: 'Antananarivo - TNR' },
+  { id: '2', title: 'Antsirabe - BIRA' },
+]

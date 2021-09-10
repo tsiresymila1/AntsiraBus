@@ -19,7 +19,7 @@ const SplashScreen = ({ navigation }) => {
 
     return (
         <>
-        <StatusBar  translucent backgroundColor={'#00000000'}  ></StatusBar>
+        <StatusBar  backgroundColor={'#f5f5f5f5'}  ></StatusBar>
         <View style={styles.center}>
             <View style={{ flexDirection : 'column', alignItems : 'center',justifyContent : 'center', flex : 1}}>
                 <Image style={imagesStyles.logo} source={ require('../assets/images/logo.png')}></Image>

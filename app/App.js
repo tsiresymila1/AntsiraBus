@@ -9,8 +9,8 @@
 import React from 'react';
 import {Provider as MaterialProvider,DefaultTheme} from 'react-native-paper';
 import { NavigationContainer, DefaultTheme as  DefaultTheme2 } from '@react-navigation/native';
-// import { createStackNavigator} from '@react-navigation/native-stack';
-import { CardStyleInterpolators, TransitionSpecs,createStackNavigator } from '@react-navigation/stack';
+import {Text} from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import {
   StyleSheet, SafeAreaView
@@ -38,6 +38,14 @@ const theme2 = {
     accent: '#1a237e',
   },
 };
+
+let oldRender = Text.render;
+Text.render = function (...args) {
+    let origin = oldRender.call(this, ...args);
+    return React.cloneElement(origin, {
+        style: [{fontFamily: 'Poppins-Regular'}, origin.props.style]
+    });
+} 
 
 const horizontalAnimation  = {
   cardStyleInterpolator : ({current,layouts})=>{
