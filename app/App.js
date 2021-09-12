@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+const Realm = require('realm');
 import {Provider as MaterialProvider,DefaultTheme} from 'react-native-paper';
 import { NavigationContainer, DefaultTheme as  DefaultTheme2 } from '@react-navigation/native';
 import {Text} from 'react-native';
@@ -18,6 +19,12 @@ import {
 
 import SplashScreen from './screens/SplashScreen';
 import MainScreen from './screens/MainScreen';
+import Login from './screens/LoginScreen';
+import ReservationScreen from './screens/ReservationScreen';
+import ForgotPassswordScreen from './screens/ForgotPassswrodScreeen';
+import CodeScreen from './screens/CodeScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import AboutScreen from './screens/AboutScreen';
 
 const Stack = createStackNavigator();
 
@@ -71,6 +78,12 @@ const App = () => {
             <Stack.Navigator initialRouteName="Splash" screenOptions={horizontalAnimation}>
                 <Stack.Screen name="Splash" options={{ headerShown: false }} component={SplashScreen} />
                 <Stack.Screen name="Main" options={{headerShown: false}}  component={MainScreen} />
+                <Stack.Screen name="Login" options={{headerShown: false}}  component={Login} />
+                <Stack.Screen name="ForgotPassword" options={{headerShown: false}}  component={ForgotPassswordScreen} />
+                <Stack.Screen name="Reservation" options={{headerShown: false}}  component={ReservationScreen} />
+                <Stack.Screen name="Code" options={{headerShown: false}}  component={CodeScreen} />
+                <Stack.Screen name="ResetPassword" options={{headerShown: false}}  component={ResetPasswordScreen} />
+                <Stack.Screen name="About" options={{headerShown: false}}  component={AboutScreen} />
             </Stack.Navigator>
             </MaterialProvider>
         </NavigationContainer>

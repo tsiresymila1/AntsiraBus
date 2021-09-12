@@ -13,13 +13,20 @@ export default DrawerContent = ({navigation})=> {
                 <Image style={{ width: '100%', height: 120, resizeMode: 'contain' }} source={require('../../assets/images/logo.png')}></Image>
                 <Text style={{ textAlign: 'center', color: Colors.white, fontFamily:'Poppins-Regular' }}>AntsiraBus</Text>
             </View>
-            <TouchableRipple style={{ width: '100%'}} onPress={()=>{}}>      
+            <TouchableRipple style={{ width: '100%'}} onPress={()=>{
+                
+                navigation.closeDrawer();
+                navigation.navigate('Reservation',{withAnimation: true})
+            }}>      
                 <View style={{ height: 54,  padding:12, marginTop:9,flexDirection: "row", flexWrap: "wrap",alignItems:"center" }}>
                     <Icon name="bus" size={24} color="#1a237e" />
                     <Text  style={{ textAlign: 'left', color: "#1a237e", fontFamily:'Poppins-Regular', marginLeft: 16 }}>Mes réservations</Text>
                 </View>
             </TouchableRipple>
-            <TouchableRipple style={{ width: '100%'}} onPress={()=>{navigation.navigate('List')}}>      
+            <TouchableRipple style={{ width: '100%'}} onPress={()=>{
+                    navigation.closeDrawer();
+                    navigation.navigate('About', {withAnimation: true})
+                }}>      
                 <View style={{ height: 54,  padding:9, marginTop:9,flexDirection: "row", flexWrap: "wrap", alignItems: 'center'}}>
                     <Icon name="info-circle" size={24} color="#1a237e" />
                     <Text  style={{ textAlign: 'left', color: "#1a237e", fontFamily:'Poppins-Regular', marginLeft: 16 }}>A propos</Text>

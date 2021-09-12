@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import io.realm.react.RealmReactPackage;
 import com.swmansion.reanimated.ReanimatedPackage;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -16,7 +17,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.airbnb.android.react.lottie.LottiePackage;
-import com.facebook.react.bridge.JSIModulePackage; // <- add
+import com.facebook.react.bridge.JSIModulePackage; 
 import com.swmansion.reanimated.ReanimatedJSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -33,7 +34,8 @@ public class MainApplication extends Application implements ReactApplication {
           @SuppressWarnings("UnnecessaryLocalVariable")
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
-          // packages.add(new MyReactNativePackage());
+          // packages.add(new WatermelonDBPackage());
+          // packages.add(new RealmReactPackage());
           packages.add(new LottiePackage());
           return packages;
         }

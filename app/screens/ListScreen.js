@@ -24,9 +24,8 @@ const ListScreen =  ({navigation}) => {
                 </View>
             </View>
        </View>
-       
        <View style={{ marginTop: 18, height: 'auto', paddingEnd: 8, paddingStart:7}}>
-            <ListItem />
+            <ListItem time="18:00" totalplace="13" dispo="13" price="13000" navigation={navigation} />
         </View>
       </>
       
@@ -35,6 +34,7 @@ const ListScreen =  ({navigation}) => {
 
 const styles = StyleSheet.create({
     text : { color:"white", fontFamily:'Poppins-Regular'}
-})
+});
+
 
 export default ListScreen;

@@ -1,12 +1,14 @@
 
 import React,{useState} from "react";
-import { View,StyleSheet,Keyboard,Modal } from 'react-native';
+import { View,StyleSheet,Keyboard } from 'react-native';
 import SnackBar from 'react-native-snackbar-component';
-import { Card,Button,TextInput } from "react-native-paper";
+import { Card,Button,TextInput,Modal, Portal } from "react-native-paper";
 import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown'
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import AnimatedLottieView from 'lottie-react-native';
 import moment from "moment";
+import { Icon } from 'react-native-vector-icons/FontAwesome';
+import { Text } from 'react-native';
 
 
 export default Content = ({navigation})=> {
@@ -38,7 +40,7 @@ export default Content = ({navigation})=> {
   const handleSearch = () => {
     if(`${selectedStartItem}`.trim() == "" || `${selectedEndItem}`.trim() === "" || !`${selectedDate}`.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/)){
         if(!visibleSnake){
-            setmessageError('Information non complete ');
+            setmessageError('Information non complete');
             setvisibleSnake(true);
             setTimeout(function(){
               setvisibleSnake(false);
@@ -55,6 +57,7 @@ export default Content = ({navigation})=> {
   }
 
   return (
+     <>
       <View style={styles.center}>
         <Card style={{ height : 254, width : '100%', mapasrgin : 18, justifyContent: 'center'}}>
           <Card.Content style={{ marginLeft: 20, marginRight: 20  }}>
@@ -102,23 +105,25 @@ export default Content = ({navigation})=> {
                 style={{ }}
                 onCancel={hideDatePicker}
             />
-           <Button icon={"magnify"} style={{ marginTop : 12 }} mode="contained" onPress={() => handleSearch()}>
+           <Button icon={"magnify"} style={{ marginTop : 12, backgroundColor:"#1f064f" }} mode="contained" onPress={() => handleSearch()}>
                 Rechercher
             </Button>
           </Card.Content>
         </Card>
-        <SnackBar visible={visibleSnake}  backgroundColor={"#9e0000"} messageColor={"#f5f5f5"} textMessage={messageError} autoHidingTime={2000} />
-        <Modal
-            animationType="fade"
-            transparent={false}
-            style={{ opacity: 0.2}}
-            visible={visibleModal}
-            onRequestClose={() => {
-              setvisibleModal(!visibleModal);
-            }}>
-            <AnimatedLottieView source={require('../../assets/searc_loader.json')} autoPlay={true} loop />
-        </Modal>
+        <SnackBar left={8} right={8} bottom={12}  containerStyle={{borderRadius:8 , justifyContent: 'center', alignItems: 'center'}} visible={visibleSnake}  backgroundColor={"#9e0000"} messageColor={"#f5f5f5"} textMessage={messageError} autoHidingTime={2000}  />
       </View>
+      <Portal>
+      <Modal
+          animationType="fade"
+          contentContainerStyle={{backgroundColor: 'transparent', padding: 20,height: 200}}
+          visible={visibleModal}
+          onDismiss={() => {
+            setvisibleModal(!visibleModal);
+          }}>
+          <AnimatedLottieView source={require('../../assets/searc_loader.json')} autoPlay={true} loop />
+      </Modal>
+      </Portal>
+      </>
   );
 }
 
